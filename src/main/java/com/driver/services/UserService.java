@@ -22,8 +22,9 @@ public class UserService {
     public Integer addUser(User user){
 
         //Jut simply add the user to the Db and return the userId returned by the repository
-        userRepository.save(user);
-        return user.getId();
+        User u =userRepository.save(user);
+
+        return u.getId();
     }
 
     public Integer getAvailableCountOfWebSeriesViewable(Integer userId){
@@ -36,31 +37,35 @@ public class UserService {
 
         List<WebSeries> webSeriesList = webSeriesRepository.findAll();
 
-        int cntOfWeb = 0;
-        for(WebSeries webSeries : webSeriesList){
-            if(webSeries.getSubscriptionType().equals(subscriptionType) && webSeries.getAgeLimit()<=user.getAge()){
-                cntOfWeb++;
-            }
-        }
-        return cntOfWeb;
-
-//        int cntOfBasicWeb = 0;
-//        int cntOfProWeb = 0;
-//        int cntOfEliteWeb = 0;
-//
+//        int cntOfWeb = 0;
 //        for(WebSeries webSeries : webSeriesList){
-//            if(webSeries.getSubscriptionType().equals(SubscriptionType.BASIC) && webSeries.getAgeLimit()<=user.getAge()){
-//                cntOfBasicWeb++;
-//            }
-//            if(webSeries.getSubscriptionType().equals(SubscriptionType.PRO) && webSeries.getAgeLimit()<=user.getAge()){
-//                cntOfProWeb++;
-//            }
-//            if(webSeries.getSubscriptionType().equals(SubscriptionType.ELITE) && webSeries.getAgeLimit()<=user.getAge()){
-//                cntOfEliteWeb++;
+//            if(webSeries.getSubscriptionType().equals(subscriptionType) && webSeries.getAgeLimit()<=user.getAge()){
+//                cntOfWeb++;
 //            }
 //        }
+//        return cntOfWeb;
 
+        int cntOfBasicWeb = 0;
+        int cntOfProWeb = 0;
+        int cntOfEliteWeb = 0;
+
+        for(WebSeries webSeries : webSeriesList){
+            if(webSeries.getSubscriptionType().equals(SubscriptionType.BASIC) && webSeries.getAgeLimit()<=user.getAge()){
+                cntOfBasicWeb++;
+            }
+            if(webSeries.getSubscriptionType().equals(SubscriptionType.PRO) && webSeries.getAgeLimit()<=user.getAge()){
+                cntOfProWeb++;
+            }
+            if(webSeries.getSubscriptionType().equals(SubscriptionType.ELITE) && webSeries.getAgeLimit()<=user.getAge()){
+                cntOfEliteWeb++;
+            }
+        }
+        if(subscriptionType.equals(SubscriptionType.BASIC)){
+            return cntOfBasicWeb;
+        }else if(subscriptionType.equals(SubscriptionType.PRO)){
+            return cntOfBasicWeb+cntOfProWeb;
+        }else{
+            return cntOfBasicWeb+cntOfProWeb+cntOfEliteWeb;
+        }
     }
-
-
 }
