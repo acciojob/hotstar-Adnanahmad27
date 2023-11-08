@@ -17,16 +17,11 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
     private String name;
-
     private int age;
-
     private String mobNo;
-
     @OneToOne(mappedBy = "user",cascade = CascadeType.ALL)
     private Subscription subscription;
-
     public User(int id, String name, int age, String mobNo) {
         this.id = id;
         this.name = name;

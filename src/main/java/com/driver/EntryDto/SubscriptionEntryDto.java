@@ -4,7 +4,6 @@ import com.driver.model.SubscriptionType;
 
 
 public class SubscriptionEntryDto {
-
     private int userId;
     private SubscriptionType subscriptionType;
     private int noOfScreensRequired;

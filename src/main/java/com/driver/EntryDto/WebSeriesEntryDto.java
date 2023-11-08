@@ -8,8 +8,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 public class WebSeriesEntryDto {
-
-
     private String seriesName;
 
     private int ageLimit;

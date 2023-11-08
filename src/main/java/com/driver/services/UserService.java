@@ -17,22 +17,48 @@ public class UserService {
 
     @Autowired
     UserRepository userRepository;
-
     @Autowired
     WebSeriesRepository webSeriesRepository;
-
-
     public Integer addUser(User user){
 
         //Jut simply add the user to the Db and return the userId returned by the repository
-        return null;
+        userRepository.save(user);
+        return user.getId();
     }
 
     public Integer getAvailableCountOfWebSeriesViewable(Integer userId){
 
         //Return the count of all webSeries that a user can watch based on his ageLimit and subscriptionType
-        //Hint: Take out all the Webseries from the WebRepository
+        //Hint: Take out all the Web series from the WebRepository
+        User user = userRepository.findById(userId).get();
+        Subscription subscription = user.getSubscription();
+        SubscriptionType subscriptionType = subscription.getSubscriptionType();
 
+        List<WebSeries> webSeriesList = webSeriesRepository.findAll();
+
+        int cntOfWeb = 0;
+        for(WebSeries webSeries : webSeriesList){
+            if(webSeries.getSubscriptionType().equals(subscriptionType) && webSeries.getAgeLimit()<=user.getAge()){
+                cntOfWeb++;
+            }
+        }
+        return cntOfWeb;
+
+//        int cntOfBasicWeb = 0;
+//        int cntOfProWeb = 0;
+//        int cntOfEliteWeb = 0;
+//
+//        for(WebSeries webSeries : webSeriesList){
+//            if(webSeries.getSubscriptionType().equals(SubscriptionType.BASIC) && webSeries.getAgeLimit()<=user.getAge()){
+//                cntOfBasicWeb++;
+//            }
+//            if(webSeries.getSubscriptionType().equals(SubscriptionType.PRO) && webSeries.getAgeLimit()<=user.getAge()){
+//                cntOfProWeb++;
+//            }
+//            if(webSeries.getSubscriptionType().equals(SubscriptionType.ELITE) && webSeries.getAgeLimit()<=user.getAge()){
+//                cntOfEliteWeb++;
+//            }
+//        }
 
         return null;
     }
